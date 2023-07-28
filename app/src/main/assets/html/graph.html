@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aktivsens Community</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include Bootstrap JS, Firebase JS, and Chart.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        td {
+            text-align: center;
+        }
+        th {
+            text-align: center;
+        }
+        .gradient-custom {
+            /* fallback for old browsers */
+            background: #f6d365;
+
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+        }
+
+        .circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        .loading-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<nav class="navbar navbar-dark bg-dark sticky-top" style="display: block;">
+    <div class="w-100" style="padding: 0px;">
+        <a class="navbar-brand text-center d-flex align-items-center" style="flex-direction: column; padding: 0px; margin: 0px;">
+            <img src="icon.png" width="40" height="30" class="d-inline-block align-top" alt="">
+            <span class="d-block" style="font-size: 10pt;">Your Movements</span>
+        </a>
+    </div>
+</nav>
+
+<body style="background-color: #121212;">
+    <div class="container">
+        <div id="loadingIndicator" class="loading-indicator">
+            <p style="color: white;">GENERATING REPORT</p>
+        </div><br><br><br><br>
+        <canvas id="graph" style="display: none;"></canvas>
+        <div class="form-group mt-4" id="sliders" style="display: none;">
+
+        </div>
+    </div>
+
+    <script type="module">
+	
+	
+function getNuma() {
+alert(1);
+}
+
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Get the current URL
+        const currentUrl = window.location.href;
+        const url = new URL(currentUrl);
+        const params = new URLSearchParams(url.search);
+        const paramName = 'user';
+        const usernamex = params.get(paramName);
+		var numa = params.get('days');
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCirouG4pcemP5zC8DIOvIk6cCqF91ilp8",
+    authDomain: "aktivsens.firebaseapp.com",
+    databaseURL: "https://aktivsens-default-rtdb.firebaseio.com",
+    projectId: "aktivsens",
+    storageBucket: "aktivsens.appspot.com",
+    messagingSenderId: "969652351600",
+    appId: "1:969652351600:web:b937b0d90f0f6f3cf53ab5",
+    measurementId: "G-VSSCCH4Q2J"
+  };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the data node
+        const dataRef = firebase.database().ref("DATA_" + usernamex);
+
+	
+		
+        // Function to retrieve and display data as a graph
+ function displayDataAsGraph(num) {
+  dataRef.once("value", (snapshot) => {
+    const data = snapshot.val();
+
+    // Extract dates and counts from the data
+    const dates = Object.keys(data);
+    const counts = Object.values(data);
+
+    // Select the last two dates and counts
+    const selectedDates = dates.slice(-num);
+    const selectedCounts = counts.slice(-num);
+
+    // Create the graph context
+    const ctx = document.getElementById("graph").getContext("2d");
+
+    // Create the graph
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: selectedDates,
+        datasets: [
+          {
+            label: "Count",
+            data: selectedCounts,
+            borderColor: "rgba(50, 205, 50, 1)",
+            backgroundColor: "rgba(50, 205, 50, 0.5)",
+            fill: true,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            precision: 0,
+          },
+        },
+      },
+    });
+
+    // Hide the loading indicator and show the graph
+    document.getElementById("loadingIndicator").style.display = "none";
+	document.getElementById("sliders").style.display = "block";
+    document.getElementById("graph").style.display = "block";
+	
+  });
+}
+
+
+        // Call the function to display data as a graph
+        displayDataAsGraph(numa);
+		
+		
+	// Get the slider element
+const slider = document.getElementById('daysSlider');
+document.getElementById('daysSlider').value = numa;
+
+localStorage.setItem("days",numa);
+
+
+//Function to get the slider value in real time
+function getSliderValue() {
+const value = parseInt(slider.value);
+ console.log('Slider value:', value);
+ localStorage.setItem("days",numa);
+}
+
+
+// Add event listener to the slider input event
+slider.addEventListener('input', getSliderValue);
+
+    </script>
+	
+	
+</body>
+</html>

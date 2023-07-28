@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "969652351600",
+    "firebase_url": "https://aktivsens-default-rtdb.firebaseio.com",
+    "project_id": "aktivsens",
+    "storage_bucket": "aktivsens.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969652351600:android:6baf65906c085fe5f53ab5",
+        "android_client_info": {
+          "package_name": "com.healthcare.aktivsens"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969652351600-g56s0mkst8n6nigaksl014lus3p3roir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiw2ecCGvvchsisuUyVuMSbqgEKazfXe8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969652351600-g56s0mkst8n6nigaksl014lus3p3roir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

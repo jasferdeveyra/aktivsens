@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aktivsens Community</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- Include Bootstrap JS and Firebase JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+		 td {
+            text-align: center;
+        }
+		th {
+            text-align: center;
+        }
+		
+		.gradient-custom {
+/* fallback for old browsers */
+background: #f6d365;
+
+/* Chrome 10-25, Safari 5.1-6 */
+background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+
+/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+}
+
+
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.loading-indicator {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.navbar {
+  position: sticky;
+  top: 0;
+}
+
+
+
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+
+<nav class="navbar navbar-dark bg-dark sticky-top" style="display: block;">
+  <div class="w-100" style="padding: 0px;">
+    <a class="navbar-brand text-center d-flex align-items-center" style="flex-direction: column; padding: 0px; margin: 0px;">
+      <img src="icon.png" width="40" height="30" class="d-inline-block align-top" alt="">
+      <span class="d-block" style="font-size: 10pt;">Aktivsens Community</span>
+    </a>
+  </div>
+</nav>
+
+
+
+
+
+
+<body style="background-color: #121212;">
+
+
+
+
+
+
+
+
+  <div class="container">
+ 
+    <div class="row" id="communityData"></div>	
+	<br><br><br><br><br><br>
+
+  </div>
+
+
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyCirouG4pcemP5zC8DIOvIk6cCqF91ilp8",
+    authDomain: "aktivsens.firebaseapp.com",
+    databaseURL: "https://aktivsens-default-rtdb.firebaseio.com",
+    projectId: "aktivsens",
+    storageBucket: "aktivsens.appspot.com",
+    messagingSenderId: "969652351600",
+    appId: "1:969652351600:web:b937b0d90f0f6f3cf53ab5",
+    measurementId: "G-VSSCCH4Q2J"
+  };
+
+      // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    firebase.initializeApp(firebaseConfig);
+
+    // Get a reference to the community node
+    const communityRef = firebase.database().ref("community");
+
+    // Function to retrieve and display community data
+    function displayCommunityData() {
+      communityRef.orderByChild("movcount").once("value", (snapshot) => {
+        const communityData = snapshot.val();
+
+        // Sort the community data in descending order based on movement count
+        const sortedData = Object.entries(communityData).sort((a, b) => b[1].movcount - a[1].movcount);
+
+        // Get the community data container
+        const communityDataContainer = document.getElementById("communityData");
+
+        // Clear existing data
+        communityDataContainer.innerHTML = "";
+
+        // Loop through the sorted community data and create Bootstrap cards
+        sortedData.forEach(([username, data]) => {
+          const movcount = data.movcount;
+          const date = data.date;
+		  
+		  
+		      const communityData = snapshot.val();
+				let highestMoveCount = 0; // Variable to track the highest move count
+
+// Loop through the community data to find the highest move count
+for (const [username, data] of Object.entries(communityData)) {
+  const movcount = data.movcount;
+  
+  // Check if the current move count is higher than the highest move count
+  if (movcount > highestMoveCount) {
+    highestMoveCount = movcount;
+  }
+
+  // Rest of your code...
+}
+		  
+// Create the card element
+const card = document.createElement("div");
+card.classList.add("card", "mb-3");
+//card.style.boxShadow = "0 0 5px 2px rgba(255, 255, 255, 0.5)";
+
+// Create the card body
+const cardBody = document.createElement("div");
+cardBody.classList.add("card-body", "d-flex", "align-items-center");
+
+// Create the circle element
+const circle = document.createElement("div");
+circle.classList.add("circle");
+circle.textContent = getInitials(username);
+circle.style.background = "#80B83D"; 
+circle.style.color = "#fff"; 
+
+// Create a div to hold the username and texts
+const contentWrapper = document.createElement("div");
+
+// Create the username heading
+const usernameHeading = document.createElement("h5");
+usernameHeading.classList.add("card-title");
+usernameHeading.style.margin = "0";
+usernameHeading.textContent = username;
+
+// Create the movement count paragraph
+const movcountParagraph = document.createElement("p");
+movcountParagraph.classList.add("card-text");
+movcountParagraph.style.margin = "0";
+movcountParagraph.textContent = `Movement Count: ${movcount}`;
+
+// Create the date paragraph
+const dateParagraph = document.createElement("p");
+dateParagraph.classList.add("card-text", "text-muted", "small");
+dateParagraph.style.margin = "0";
+dateParagraph.textContent = `Date: ${date}`;
+
+// Append the username and texts to the content wrapper
+contentWrapper.appendChild(usernameHeading);
+contentWrapper.appendChild(movcountParagraph);
+contentWrapper.appendChild(dateParagraph);
+
+// Append the circle and content wrapper to the card body
+cardBody.appendChild(circle);
+cardBody.appendChild(contentWrapper);
+
+// Append the card body to the card
+card.appendChild(cardBody);
+
+// Create a div for each card and add the card to it
+const cardWrapper = document.createElement("div");
+cardWrapper.classList.add("col-12");
+cardWrapper.appendChild(card);
+
+// Function to get the initials from the username
+function getInitials(name) {
+  const names = name.split(" ");
+  let initials = "";
+  for (let i = 0; i < names.length; i++) {
+    initials += names[i][0];
+  }
+  return initials.toUpperCase();
+}
+
+
+// Check if this card has the highest move count
+if (movcount === highestMoveCount) {
+  // Create the bookmark element
+  const bookmark = document.createElement("div");
+  bookmark.classList.add("bookmark");
+  bookmark.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;MOST AKTIV&nbsp;&nbsp;&nbsp;&nbsp;";
+
+  // Position the bookmark on the upper right corner
+  bookmark.style.position = "absolute";
+  bookmark.style.color = "#fff";  
+  bookmark.style.background = "#80B83D"; 
+  bookmark.style.top = "0";
+  bookmark.style.right = "0";
+  bookmark.style.borderBottomLeftRadius = "5px";
+
+
+  // Append the bookmark to the card body
+  cardBody.appendChild(bookmark);
+}
+
+
+
+
+
+          // Append the card wrapper to the community data container
+          communityDataContainer.appendChild(cardWrapper);
+        });
+      });
+    }
+
+    // Call the function to display community data
+    displayCommunityData();
+	
+	
+	
+function checkDataAvailability() {
+  const communityDataElement = document.getElementById("communityData");
+
+  if (communityDataElement.childElementCount === 0) {
+    // Remove any existing loading indicator
+    const existingLoadingIndicator = document.querySelector(".loading-indicator");
+    if (existingLoadingIndicator) {
+      existingLoadingIndicator.remove();
+    }
+
+    // Create the loading indicator element
+    const loadingIndicator = document.createElement("div");
+    loadingIndicator.classList.add("loading-indicator");
+    loadingIndicator.textContent = "LOADING...";
+	loadingIndicator.style.color = "white";
+
+    // Append the loading indicator to the communityDataElement
+    communityDataElement.appendChild(loadingIndicator);
+  }
+  setTimeout(checkDataAvailability2,30000);
+}
+
+	
+function checkDataAvailability2() {
+  const communityDataElement = document.getElementById("communityData");
+
+  if (communityDataElement.childElementCount === 0) {
+    // Remove any existing loading indicator
+    const existingLoadingIndicator = document.querySelector(".loading-indicator");
+    if (existingLoadingIndicator) {
+      existingLoadingIndicator.remove();
+    }
+
+    // Create the loading indicator element
+    const loadingIndicator = document.createElement("div");
+    loadingIndicator.classList.add("loading-indicator");
+    loadingIndicator.textContent = "Loading takes too long, do you have an internet connection? ...";
+
+    // Append the loading indicator to the communityDataElement
+    communityDataElement.appendChild(loadingIndicator);
+  }
+  
+  function rel() {
+window.location="file:///android_asset/html/error.html";
+}
+
+	setTimeout(rel,30000);
+}
+
+checkDataAvailability();
+
+  </script>
+  
+  
+  
+  
+
+	
+	
+</body>
+</html>
