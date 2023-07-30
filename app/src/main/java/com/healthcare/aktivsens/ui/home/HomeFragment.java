@@ -562,7 +562,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
             public void run() {
                 canUploadData = true;
             }
-        }, 10000); // 10 seconds delay
+        }, 60000); // 60 seconds delay
     }
 
 
