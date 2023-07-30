@@ -15,7 +15,7 @@ Aktivsens is an innovative Android application that employs accelerometer-based 
 Watch the demo video [here](https://drive.google.com/file/d/15YcS2YYGzQ356mYxV7AtHB3iqMnwmUZ8/view?usp=sharing).
 
 ## Requirements
-* Android 11 and below
+* Optimized for Android 11 and below
 * Android Studio (for debugging)
 * Internet Connection
 
