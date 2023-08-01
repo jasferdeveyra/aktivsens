@@ -12,10 +12,10 @@ Aktivsens is an innovative Android application that employs accelerometer-based 
 
 
 ## Demo
-Watch the demo video [here](https://drive.google.com/file/d/15YcS2YYGzQ356mYxV7AtHB3iqMnwmUZ8/view?usp=sharing).
+Watch the demo video [here](https://www.youtube.com/watch?v=IOqQp9zsoAk&feature=youtu.be).
 
 ## Download
-Download APK file [here](https://aktivsens.web.app/).
+Download APK file [here](https://aktivsens.web.app/aktivsens.apk).
 
 
 ## Requirements
