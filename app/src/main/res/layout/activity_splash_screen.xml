@@ -16,7 +16,7 @@
         android:layout_height="434dp"
         android:foregroundGravity="bottom|center"
         android:gravity="bottom|center"
-        android:text="v 7.0"
+        android:text="v 8.0"
         android:textColor="#FFFFFF"
         android:textColorHint="#F1EAEA"
         android:textColorLink="#F8F1F1"

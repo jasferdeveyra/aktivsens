@@ -217,7 +217,7 @@ cardWrapper.classList.add("col-12");
 cardWrapper.appendChild(card);
 
 // Function to get the initials from the username
-function getInitials(name) {
+function getInitialsS(name) {
   const names = name.split(" ");
   let initials = "";
   for (let i = 0; i < names.length; i++) {
@@ -225,6 +225,15 @@ function getInitials(name) {
   }
   return initials.toUpperCase();
 }
+
+function getInitials(name) {
+  const names = name.split(" ");
+  if (names.length > 0) {
+    return names[0][0].toUpperCase();
+  }
+  return ""; // Return an empty string if the input name is empty.
+}
+
 
 
 // Check if this card has the highest move count
@@ -252,7 +261,9 @@ if (movcount === highestMoveCount) {
 
 
           // Append the card wrapper to the community data container
+		  if(username!="googletest") {
           communityDataContainer.appendChild(cardWrapper);
+		  }
         });
       });
     }

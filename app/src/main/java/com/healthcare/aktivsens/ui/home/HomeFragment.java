@@ -91,6 +91,9 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     public View myView;
 
 
+    private static final String PREFS_NAME = "MyPrefsFile";
+    private static final String DIALOG_SHOWN_KEY = "dialog_shown";
+
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
@@ -128,6 +131,19 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         // Hide the title bar
         AppCompatActivity activity = (AppCompatActivity) getActivity();
 
+        //SHOWS THE BATTERY SAVER NOTE
+        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean dialogShown = settings.getBoolean(DIALOG_SHOWN_KEY, false);
+
+        if (!dialogShown) {
+            // If the dialog has not been shown, show it and set the flag to true
+            showAlertDialog();
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean(DIALOG_SHOWN_KEY, true);
+            editor.apply();
+        }
+
+
 
         if (activity != null) {
 
@@ -136,6 +152,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
             window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
             activity.getSupportActionBar().hide();
         }
+
 
         //LOAD THE GIFS
         ImageView gifImageView = root.findViewById(R.id.topimage);
@@ -1001,5 +1018,20 @@ public class HomeFragment extends Fragment implements SensorEventListener {
             }
         });
 
+    }
+
+
+
+    private void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setView(R.layout.alert_dialog);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
