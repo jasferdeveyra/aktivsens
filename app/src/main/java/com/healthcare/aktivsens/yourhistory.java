@@ -50,7 +50,7 @@ public class yourhistory extends AppCompatActivity {
 
 
         SeekBar seekBar = findViewById(R.id.seekbar);
-        seekBar.setMax(31);
+        seekBar.setMax(365);
 
         int progressValue = sharedPref.getInt("selectedValue", 0);; // Set the desired progress value
         seekBar.setProgress(progressValue);

@@ -1,17 +1,23 @@
 package com.healthcare.aktivsens;
 
+import static java.security.AccessController.getContext;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +25,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.healthcare.aktivsens.MainActivity;
+
+import android.net.Uri;
+
+import java.security.AccessControlContext;
+
 
 public class login extends AppCompatActivity {
 
@@ -34,6 +44,8 @@ public class login extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.login);
+
+        showPrivacyPolicyDialog();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         sharedPref = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -178,5 +190,42 @@ public class login extends AppCompatActivity {
             }
         });
     }
+
+
+
+    private void showPrivacyPolicyDialog() {
+        Context context = this; // Use 'this' as the context directly from the activity
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        boolean hasAcceptedPrivacyPolicy = sharedPreferences.getBoolean("PrivacyPolicyAccepted", false);
+
+        if (!hasAcceptedPrivacyPolicy) {
+            // Inflate the custom layout
+            View dialogView = LayoutInflater.from(context).inflate(R.layout.custom_privacy_policy_dialog, null);
+            TextView textViewPrivacyPolicyContent = dialogView.findViewById(R.id.textViewPrivacyPolicyContent);
+            CheckBox checkBoxAccept = dialogView.findViewById(R.id.checkBoxAccept);
+
+            // Set the content of the privacy policy with HTML formatting
+            textViewPrivacyPolicyContent.setText(Html.fromHtml(getString(R.string.privacy_policy_content)));
+
+            // Create the AlertDialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setView(dialogView);
+            builder.setPositiveButton("I ACCEPT", (dialog, which) -> {
+                // Handle user acceptance if the checkbox is checked
+                if (checkBoxAccept.isChecked()) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("PrivacyPolicyAccepted", true);
+                    editor.apply();
+                } else {
+                    // Show a message indicating that acceptance is required
+                    Toast.makeText(context, "Please accept the Privacy Policy to continue.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
+    }
+
 
 }

@@ -103,7 +103,7 @@ alert(1);
         const paramName = 'user';
         const usernamex = params.get(paramName);
 		var numa = params.get('days');
-
+		var startdays = params.get('startday');
         // Your web app's Firebase configuration
         // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
@@ -127,9 +127,14 @@ alert(1);
         const dataRef = firebase.database().ref("DATA_" + usernamex);
 
 	
-		
-        // Function to retrieve and display data as a graph
- function displayDataAsGraph(num) {
+	
+	
+	
+	
+	
+	
+	// Function to retrieve and display data as a graph
+function displayDataAsGraph(num, startday) {
   dataRef.once("value", (snapshot) => {
     const data = snapshot.val();
 
@@ -137,9 +142,24 @@ alert(1);
     const dates = Object.keys(data);
     const counts = Object.values(data);
 
-    // Select the last two dates and counts
-    const selectedDates = dates.slice(-num);
-    const selectedCounts = counts.slice(-num);
+    // Combine dates and counts into an array of objects for easier sorting
+    const dataPoints = dates.map((date, index) => ({ date, count: counts[index] }));
+
+    // Sort the dataPoints in ascending order based on date
+    dataPoints.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    let selectedDataPoints;
+    if (startday && dates.includes(startday)) {
+      // If startday is provided and exists in the data, select data from that date onwards
+      selectedDataPoints = dataPoints.slice(dates.indexOf(startday));
+    } else {
+      // Select the last 'num' dates and counts if startday is not provided or invalid
+      selectedDataPoints = dataPoints.slice(-num);
+    }
+
+    // Extract sorted dates and counts
+    const selectedDates = selectedDataPoints.map((dataPoint) => dataPoint.date);
+    const selectedCounts = selectedDataPoints.map((dataPoint) => dataPoint.count);
 
     // Create the graph context
     const ctx = document.getElementById("graph").getContext("2d");
@@ -171,15 +191,19 @@ alert(1);
 
     // Hide the loading indicator and show the graph
     document.getElementById("loadingIndicator").style.display = "none";
-	document.getElementById("sliders").style.display = "block";
+    document.getElementById("sliders").style.display = "block";
     document.getElementById("graph").style.display = "block";
-	
   });
 }
 
 
+
+
+
+
+
         // Call the function to display data as a graph
-        displayDataAsGraph(numa);
+        displayDataAsGraph(numa, startdays);
 		
 		
 	// Get the slider element

@@ -3,4 +3,59 @@
     <string name="title_home">Home</string>
     <string name="title_community">Community</string>
     <string name="title_options">Options</string>
+    <string name="privacy_policy_content">
+        <![CDATA[
+        <!DOCTYPE html>
+<html>
+
+
+<body>
+    <h1>Privacy Policy</h1>
+    <p>
+        Welcome to our app! We value your privacy and want to be transparent about how we collect, use, and
+        protect your data. This privacy policy explains what information we collect, how we use it, and your
+        choices regarding your data.
+    </p>
+
+    <h2>Registration</h2>
+    <p>
+        Our registration process requires you to provide only a username and password of your choice. We do not
+        require any email, phone number, or other personal sensitive information.
+    </p>
+
+    <h2>Data Collection</h2>
+    <p>
+        We only collect movement counts and dates. We do not collect any location data or personal information.
+        We do not store any sensitive information about you.
+    </p>
+
+    <h2>Data Storage</h2>
+    <p>
+        Please note that data collected is not encrypted and is stored in a public database. However, we take
+        all reasonable precautions to protect your data and ensure its security.
+    </p>
+
+    <h2>Data Deletion</h2>
+    <p>
+        If you choose to delete your account, all records associated with your username will be entirely deleted
+        from our database. We do not retain any of your data after account deletion.
+    </p>
+
+    <h2>Contact Us</h2>
+    <p>
+        If you have any questions or concerns about our privacy policy or the use of your data, please feel free
+        to contact us at <a href="mailto:deveyra.j.bsinfotech@gmail.com">deveyra.j.bsinfotech@gmail.com</a>.
+    </p>
+
+    <p>
+        Thank you for trusting us with your data. Your privacy is important to us, and we are committed to
+        protecting it.
+    </p>
+</body>
+
+</html>
+
+        ]]>
+    </string>
 </resources>
+

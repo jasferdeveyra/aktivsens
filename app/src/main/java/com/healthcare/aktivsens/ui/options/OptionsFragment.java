@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -255,7 +256,9 @@ public class OptionsFragment extends Fragment {
                                     currentUser.delete().addOnCompleteListener(deleteTask -> {
                                         if (deleteTask.isSuccessful()) {
 
+                                            deleteDataNodeForUser(valueToDelete);
                                             deleteCommunityValue(valueToDelete);
+
 
                                             SharedPreferences.Editor editor = sharedPreferences.edit();
                                             editor.clear().apply();
@@ -284,6 +287,7 @@ public class OptionsFragment extends Fragment {
                                     clearAllData();
                                     navigateToLogin();
                                     deleteCommunityValue(valueToDelete);
+                                    deleteDataNodeForUser(valueToDelete);
                                     Toast.makeText(requireContext(), "Account Deleted", Toast.LENGTH_SHORT).show();
                                 }
                             } else {
@@ -343,6 +347,20 @@ public class OptionsFragment extends Fragment {
     }
 
 
+
+    private void deleteDataNodeForUser(String username) {
+        DatabaseReference dataRef = FirebaseDatabase.getInstance().getReference("DATA_" + username);
+        dataRef.removeValue()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // Node successfully deleted
+                        Toast.makeText(requireContext(), "DATA_" + username + " node deleted from Firebase", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // Failed to delete node
+                        Toast.makeText(requireContext(), "Failed to delete DATA_" + username + " node from Firebase", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 
 
